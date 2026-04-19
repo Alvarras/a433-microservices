@@ -1,0 +1,45 @@
+services:
+  # Service untuk aplikasi Node.js
+  item-app:
+    # Menggunakan image item-app dari GitHub Packages
+    image: ghcr.io/alvarras/item-app:v1
+    
+    # Nama container
+    container_name: item-app
+    
+    # Port mapping - mengekspos port 80 di host ke port 8080 di container sehingga aplikasi dapat diakses dari port 80 di host
+    ports:
+      - "80:8080"
+    
+    # Memastikan item-app hanya berjalan setelah item-db diluncurkan
+    depends_on:
+      - item-db
+    
+    # Restart policy - container akan selalu restart ketika terhenti
+    restart: always
+    
+    # Environment variables untuk aplikasi
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=item-db
+
+  # Service untuk database MongoDB
+  item-db:
+    # Menggunakan image mongo:3 dari Docker Hub
+    image: mongo:3
+    
+    # Nama container
+    container_name: item-db
+    
+    # Volume configuration - menggunakan volume bernama app-db dengan target /data/db di container untuk persistent storage
+    volumes:
+      - app-db:/data/db
+    
+    # Restart policy - container akan selalu restart ketika terhenti
+    restart: always
+
+# Definisi volume yang digunakan oleh services
+volumes:
+  # Volume bernama app-db untuk menyimpan data MongoDB
+  app-db:
+    driver: local
