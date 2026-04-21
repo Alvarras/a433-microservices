@@ -1,0 +1,55 @@
+name: Build and Push Docker Image to GitHub Package
+
+on:
+  push:
+    branches:
+      - karsajobs
+    paths:
+      - 'cmd/**'
+      - 'pkg/**'
+      - 'Dockerfile'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/integration.yml'
+  pull_request:
+    branches:
+      - karsajobs
+    paths:
+      - 'cmd/**'
+      - 'pkg/**'
+      - 'Dockerfile'
+      - 'go.mod'
+      - 'go.sum'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 3: Make script executable
+      - name: Make script executable
+        run: chmod +x ./build_push_image_karsajobs.sh
+
+      # Step 4: Run build and push script
+      - name: Build and Push Docker Image
+        env:
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+          IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+        run: ./build_push_image_karsajobs.sh
+
