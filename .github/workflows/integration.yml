@@ -3,7 +3,7 @@ name: Build and Push Docker Image to GitHub Package
 on:
     push:
         branches:
-            - main
+            - karsajobs-ui
         paths:
             - 'src/**'
             - 'public/**'
@@ -13,7 +13,7 @@ on:
             - '.github/workflows/integration.yml'
     pull_request:
         branches:
-            - main
+            - karsajobs-ui
         paths:
             - 'src/**'
             - 'public/**'
