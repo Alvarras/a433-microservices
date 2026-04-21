@@ -22,8 +22,28 @@ on:
             - 'package-lock.json'
 
 jobs:
-  build-and-push:
+  lint-dockerfile:
     runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install hadolint
+      - name: Install hadolint
+        run: |
+          curl -L https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o hadolint
+          chmod +x hadolint
+          sudo mv hadolint /usr/local/bin/
+
+      # Step 3: Run hadolint on Dockerfile
+      - name: Lint Dockerfile
+        run: hadolint Dockerfile
+
+  build-app-karsajobs-ui:
+    runs-on: ubuntu-latest
+    needs: lint-dockerfile
     
     permissions:
       contents: read
