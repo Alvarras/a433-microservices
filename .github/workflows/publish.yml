@@ -33,6 +33,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/order-service:latest
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/order-service:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/order-service:buildcache,mode=max
+          tags: ghcr.io/alvarras/order-service:latest
+          cache-from: type=registry,ref=ghcr.io/alvarras/order-service:buildcache
+          cache-to: type=registry,ref=ghcr.io/alvarras/order-service:buildcache,mode=max
