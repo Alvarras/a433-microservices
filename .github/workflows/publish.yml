@@ -41,7 +41,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/alvarras/shipping-service:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/alvarras/shipping-service:buildcache
           cache-to: type=registry,ref=ghcr.io/alvarras/shipping-service:buildcache,mode=max
