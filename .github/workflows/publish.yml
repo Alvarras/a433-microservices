@@ -28,20 +28,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/${{ github.repository_owner }}/order-service
-          tags: |
-            type=raw,value=latest
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/alvarras/order-service:buildcache
-          cache-to: type=registry,ref=ghcr.io/alvarras/order-service:buildcache,mode=max
+          tags: ghcr.io/${{ github.repository_owner }}/order-service:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/order-service:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/order-service:buildcache,mode=max
